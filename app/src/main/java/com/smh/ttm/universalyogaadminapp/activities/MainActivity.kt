@@ -9,9 +9,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.smh.ttm.universalyogaadminapp.R
 import com.smh.ttm.universalyogaadminapp.data.YogaClassInstance
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.databinding.ActivityMainBinding
@@ -96,23 +93,39 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
             when (resource) {
                 is Resource.Loading -> {
                     // Show loading indicator if necessary
-                  //  showLoading()
+
+                    showLoading()
+                    binding.tvClassesTitle.visibility = View.GONE
+                    binding.tvClassesSeeAll.visibility = View.GONE
+                    binding.vpClassItemList.visibility = View.GONE
                 }
 
                 is Resource.Success -> {
                     // Handle success, e.g., update UI or show a message
+                    hideLoading()
+                    if(resource.data.isNullOrEmpty()){
+                        binding.tvClassesTitle.visibility = View.GONE
+                        binding.tvClassesSeeAll.visibility = View.GONE
+                        binding.vpClassItemList.visibility = View.GONE
 
-                   // hideLoading()
-                    resource.data?.let {
-                        classItemListViewPod.setData(this,itemList = it)
+                    }else{
+                        binding.tvClassesTitle.visibility = View.VISIBLE
+                        binding.tvClassesSeeAll.visibility = View.VISIBLE
+                        binding.vpClassItemList.visibility = View.VISIBLE
+                        classItemListViewPod.setData(this,itemList = resource.data)
 
                     }
+
+
 
                 }
 
                 is Resource.Error -> {
                     // Handle error, e.g., show an error message
-                   // hideLoading()
+                    hideLoading()
+                    binding.tvClassesTitle.visibility = View.GONE
+                    binding.tvClassesSeeAll.visibility = View.GONE
+                    binding.vpClassItemList.visibility = View.GONE
                     Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -124,23 +137,36 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
             when (resource) {
                 is Resource.Loading -> {
                     // Show loading indicator if necessary
-                    showLoading()
+                    binding.tvCoursesTitle.visibility = View.GONE
+                    binding.tvCoursesSeeAll.visibility = View.GONE
+                    binding.vpCourseItemList.visibility = View.GONE
                 }
 
                 is Resource.Success -> {
                     // Handle success, e.g., update UI or show a message
 
-                    hideLoading()
-                    resource.data?.let {
-                        courseItemListViewPod.setData(this,itemList = it)
+                    if(resource.data.isNullOrEmpty()){
+                        binding.tvCoursesTitle.visibility = View.GONE
+                        binding.tvCoursesSeeAll.visibility = View.GONE
+                        binding.vpCourseItemList.visibility = View.GONE
+                    }else{
+                        binding.tvCoursesTitle.visibility = View.VISIBLE
+                        binding.tvCoursesSeeAll.visibility = View.VISIBLE
+                        binding.vpCourseItemList.visibility = View.VISIBLE
+                        courseItemListViewPod.setData(this,itemList = resource.data)
 
                     }
+
+
 
                 }
 
                 is Resource.Error -> {
                     // Handle error, e.g., show an error message
-                    hideLoading()
+
+                    binding.tvCoursesTitle.visibility = View.GONE
+                    binding.tvCoursesSeeAll.visibility = View.GONE
+                    binding.vpCourseItemList.visibility = View.GONE
                     Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
                 }
             }

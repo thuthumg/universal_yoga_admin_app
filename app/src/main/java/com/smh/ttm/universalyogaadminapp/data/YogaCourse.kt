@@ -7,6 +7,7 @@ import java.io.Serializable
 @Entity(tableName = "yoga_course_table")
 data class YogaCourse(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    var courseId: Long,
     var courseName: String,
     var dayOfWeek: String, // e.g. Monday
     var time: String,      // e.g. 10:00

@@ -25,6 +25,8 @@ import java.io.Serializable
 @Entity(tableName = "yoga_class_instance_table")
 data class YogaClassInstance(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    var classId: Long,
+    var className:String,
     var courseId: Int, // Foreign key referencing YogaCourse
     var courseName: String,
     var date: String,  // e.g. 17/10/2023

@@ -25,6 +25,7 @@ import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.databinding.ActivityCourseDetailBinding
 import com.smh.ttm.universalyogaadminapp.dummy.classTypes
 import com.smh.ttm.universalyogaadminapp.dummy.daysOfWeek
+import com.smh.ttm.universalyogaadminapp.dummy.filterTypes
 import com.smh.ttm.universalyogaadminapp.mvvm.Resource
 import com.smh.ttm.universalyogaadminapp.mvvm.YogaCourseViewModel
 import java.util.Calendar
@@ -32,8 +33,10 @@ import kotlin.random.Random
 
 class CourseDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCourseDetailBinding
-    // Create ViewModel with the help of ViewModelFactory
 
+    // Create ViewModel with the help of ViewModelFactory
+    var checkedClassTypeItem = intArrayOf(-1)
+    var checkedDaysOfWeekItem = intArrayOf(-1)
     private val yogaCourseViewModel: YogaCourseViewModel by viewModels()
     var mCourseVO: YogaCourse? = null
 
@@ -63,7 +66,7 @@ class CourseDetailActivity : AppCompatActivity() {
         }
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Enables back arrow
-        binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.white))
+        binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.black))
 
         getIntentParam()
         clickListener()
@@ -109,6 +112,25 @@ class CourseDetailActivity : AppCompatActivity() {
                 binding.price.setText(mCourseVO?.price)
                 binding.typeOfClass.setText(mCourseVO?.type)
                 binding.description.setText(mCourseVO?.description)
+
+                val classTypeIndex = classTypes.indexOf(mCourseVO?.type)
+
+                checkedClassTypeItem = if (classTypeIndex != -1) {
+                    intArrayOf(classTypeIndex)
+
+                } else {
+                    intArrayOf(0)
+                }
+
+                val dayOfWeekIndex = daysOfWeek.indexOf(mCourseVO?.dayOfWeek)
+
+                checkedDaysOfWeekItem = if (dayOfWeekIndex != -1) {
+                    intArrayOf(dayOfWeekIndex)
+
+                } else {
+                    intArrayOf(0)
+                }
+
 
                 binding.btnSubmit.text = "Update"
             }
@@ -173,24 +195,37 @@ class CourseDetailActivity : AppCompatActivity() {
             // Update your UI with the list of courses
         }
     }
-private fun showDayOfTheWeekDialog() {
 
+    private fun showDayOfTheWeekDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select day of the week")
-            .setItems(daysOfWeek) { _, which ->
-                binding.dayOfWeek.setText(daysOfWeek[which])
-            }
-        builder.create().show()
+
+        builder.setSingleChoiceItems(daysOfWeek, checkedDaysOfWeekItem[0]) { dialog, which ->
+            // user checked an item
+            checkedDaysOfWeekItem[0] = which
+            binding.dayOfWeek.setText(daysOfWeek[which])
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+
+
     }
 
     private fun showClassTypeDialog() {
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Type of Class")
-            .setItems(classTypes) { _, which ->
-                binding.typeOfClass.setText(classTypes[which])
-            }
-        builder.create().show()
+
+        builder.setSingleChoiceItems(classTypes, checkedClassTypeItem[0]) { dialog, which ->
+            // user checked an item
+            checkedClassTypeItem[0] = which
+            binding.typeOfClass.setText(classTypes[which])
+            dialog.dismiss()
+
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun deleteYogaCourse(yogaCourse: YogaCourse) {
@@ -267,7 +302,8 @@ private fun showDayOfTheWeekDialog() {
         typeOfClass: String
     ) {
         val yogaClass = YogaCourse(
-            courseName = "C-${typeOfClass}-${getRandomSixDigitNumber()}",
+            courseName = "${typeOfClass} Course (${dayOfWeek}-${courseTime})",
+            courseId = getRandomSixDigitNumber().toLong(),
             dayOfWeek = dayOfWeek,
             time = courseTime,
             capacity = capacity.toInt(),
@@ -298,9 +334,11 @@ private fun showDayOfTheWeekDialog() {
 
 
     }
+
     private fun getRandomSixDigitNumber(): Int {
         return Random.nextInt(100000, 1000000) // Generates a number from 100000 to 999999
     }
+
     private fun clearData() {
         binding.dayOfWeek.setText("")
         binding.courseTime.setText("")

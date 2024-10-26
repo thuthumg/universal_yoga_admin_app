@@ -2,6 +2,7 @@ package com.smh.ttm.universalyogaadminapp.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -29,7 +30,7 @@ class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
         // setContentView(R.layout.activity_course_item_list)
         binding = ActivityCourseItemListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.course_item_main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -46,21 +47,35 @@ class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
             when (resource) {
                 is Resource.Loading -> {
                     // Show loading indicator if necessary
-
+                    showLoading()
+                    binding.tvNoDataFound.visibility = View.VISIBLE
+                    binding.vpCourseList.visibility = View.GONE
                 }
 
                 is Resource.Success -> {
                     // Handle success, e.g., update UI or show a message
+                    hideLoading()
+                    binding.tvNoDataFound.visibility = View.GONE
+                    binding.vpCourseList.visibility = View.VISIBLE
 
-
-                    resource.data?.let {
-                        courseItemListViewPod.setData(this, itemList = it)
+                    if (resource.data.isNullOrEmpty()) {
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.vpCourseList.visibility = View.GONE
+                    } else {
+                        binding.tvNoDataFound.visibility = View.GONE
+                        binding.vpCourseList.visibility = View.VISIBLE
+                        courseItemListViewPod.setData(this, itemList = resource.data)
                     }
+
+
 
                 }
 
                 is Resource.Error -> {
                     // Handle error, e.g., show an error message
+                    hideLoading()
+                    binding.tvNoDataFound.visibility = View.VISIBLE
+                    binding.vpCourseList.visibility = View.GONE
                     Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -75,7 +90,7 @@ class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
         }
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Enables back arrow
-        binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.white))
+        binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.black))
         binding.toolbar.setNavigationOnClickListener {
             finish() // or your desired back action
         }
@@ -87,5 +102,18 @@ class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
 
     override fun onTapCourseItem(courseData: YogaCourse) {
         startActivity(CourseDetailActivity.newIntent(this, courseData))
+    }
+
+    private fun showLoading() {
+        binding.loadingOverlay.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
+
+    }
+
+    // Function to hide loading and restore Toolbar background
+    private fun hideLoading() {
+        binding.loadingOverlay.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+
     }
 }

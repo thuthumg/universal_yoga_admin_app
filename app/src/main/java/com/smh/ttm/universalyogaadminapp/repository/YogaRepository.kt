@@ -224,5 +224,17 @@ class YogaRepository(
             }
     }
 
+    //SearchByTeacher
+    fun searchByTeacher(teacher:String): Observable<List<YogaClassInstance>> {
+        return yogaClassInstanceDao.searchByTeacher(teacher)
+            .subscribeOn(Schedulers.io())  // Specify background thread for the operation
+    }
+
+    //SearchByDate
+    fun searchByDate(date:String): Observable<List<YogaClassInstance>> {
+        return yogaClassInstanceDao.searchByDate(date)
+            .subscribeOn(Schedulers.io())  // Specify background thread for the operation
+    }
+
 }
 

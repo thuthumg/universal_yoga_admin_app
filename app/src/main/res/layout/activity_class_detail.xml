@@ -14,7 +14,6 @@
 
         <!-- CollapsingToolbarLayout for fancy animations -->
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
@@ -25,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Yoga Class"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -38,7 +37,7 @@
                     android:id="@+id/iv_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_close_24"
+                    android:src="@drawable/ic_delete"
                     android:contentDescription="Delete"
                     android:layout_gravity="end|center_vertical"
                     android:padding="8dp" />
@@ -99,11 +98,29 @@
                 <!--         </FrameLayout>-->
 
             </androidx.cardview.widget.CardView>
-            <!--Date-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="Class Name"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_class_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:background="@drawable/enable_edit_text_bg"
+                android:focusable="false"
+                android:hint="C-00001"
+                android:padding="12dp" />
+            <!--Date-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:text="Date"
                 android:textColor="@color/black"

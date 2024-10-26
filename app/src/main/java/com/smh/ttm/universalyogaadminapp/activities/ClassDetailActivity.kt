@@ -25,18 +25,19 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.random.Random
 
 class ClassDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityClassDetailBinding
     private val yogaClassViewModel: YogaClassInstanceViewModel by viewModels()
-     private val yogaCourseViewModel: YogaCourseViewModel by viewModels()
+    private val yogaCourseViewModel: YogaCourseViewModel by viewModels()
 
-    var mClassInstanceVO: YogaClassInstance? = null
-    var weekday: String = ""
+    private var mClassInstanceVO: YogaClassInstance? = null
+    private var weekday: String = ""
 
-    var listOfYogaCourseByWeekDay : List<YogaCourse> = listOf()
-    var selectedYogaCourse : YogaCourse? = null
+    private var listOfYogaCourseByWeekDay: List<YogaCourse> = listOf()
+    private var selectedYogaCourse: YogaCourse? = null
 
 
     companion object {
@@ -64,7 +65,7 @@ class ClassDetailActivity : AppCompatActivity() {
         }
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Enables back arrow
-        binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.white))
+        binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.black))
 
         getIntentParam()
         clickListener()
@@ -92,7 +93,7 @@ class ClassDetailActivity : AppCompatActivity() {
         } else {
             binding.ivDelete.visibility = View.VISIBLE
             binding.ivDelete.setOnClickListener {
-                mClassInstanceVO?.let { deleteYogaCourse(it) }
+                mClassInstanceVO?.let { deleteYogaClassInstance(it) }
             }
         }
 
@@ -112,15 +113,20 @@ class ClassDetailActivity : AppCompatActivity() {
 
                 clearData()
             } else {
+                binding.etClassName.setText(mClassInstanceVO?.className)
                 binding.etDate.setText(mClassInstanceVO?.date)
                 binding.instructorName.setText(mClassInstanceVO?.teacher)
                 binding.description.setText(mClassInstanceVO?.additionalComments)
 
-                if (binding.etDate.text.isNullOrEmpty()) {
-                    binding.etCourse.visibility = View.VISIBLE
-                    binding.tvCourse.visibility = View.VISIBLE
-                    weekday = getDayOfWeekFromString(binding.etDate.text.toString())
-                }
+                binding.etCourse.visibility = View.VISIBLE
+                binding.tvCourse.visibility = View.VISIBLE
+                weekday = getDayOfWeekFromString(binding.etDate.text.toString())
+                getAllCourses(weekday)
+                binding.etCourse.setText(mClassInstanceVO?.courseName)
+
+//                if (binding.etDate.text.isNullOrEmpty()) {
+//
+//                }
 
 
                 binding.btnClassSave.text = "Update"
@@ -134,16 +140,18 @@ class ClassDetailActivity : AppCompatActivity() {
         binding.etDate.setText("")
         binding.instructorName.setText("")
         binding.description.setText("")
+        binding.etClassName.setText("C-${getRandomSixDigitNumber()}")
 
         binding.btnClassSave.text = "Save"
     }
 
     private fun getDayOfWeekFromString(dateString: String): String {
-        // Parse the date string in "yyyy-MM-dd" format
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        // Define the date format that matches the input string
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val date = dateFormat.parse(dateString)
 
-        // Format the date to get the day of the week
+        // Define the format to get the weekday name
         val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
         return dayFormat.format(date ?: Date())
     }
@@ -158,15 +166,15 @@ class ClassDetailActivity : AppCompatActivity() {
             binding.etCourse.setText(selectedCourse.courseName)
         }
         dialog.show(supportFragmentManager, "CourseTypeDialog")
-/*
+        /*
 
 
-        val dialog = CourseTypeDialogFragment()
-        dialog.setOnClassTypeSelectedListener { selectedType ->
-            // Handle the selected class type here, e.g., display it in a TextView
-            binding.etCourse.setText(selectedType)
-        }
-        dialog.show(supportFragmentManager, "ClassTypeDialog")*/
+                val dialog = CourseTypeDialogFragment()
+                dialog.setOnClassTypeSelectedListener { selectedType ->
+                    // Handle the selected class type here, e.g., display it in a TextView
+                    binding.etCourse.setText(selectedType)
+                }
+                dialog.show(supportFragmentManager, "ClassTypeDialog")*/
     }
 
     private fun handleClassSave() {
@@ -175,18 +183,32 @@ class ClassDetailActivity : AppCompatActivity() {
         val description = binding.description.text.toString()
         val selectedYogaCourseId = selectedYogaCourse?.id.toString()
         val selectedYogaCourseName = selectedYogaCourse?.courseName.toString()
+        val className = binding.etClassName.text.toString()
 
-        if (classDate.isEmpty() || instructorName.isEmpty() || description.isEmpty() || selectedYogaCourseId.isEmpty()) {
+        if (className.isEmpty() || classDate.isEmpty() || instructorName.isEmpty()
+            || description.isEmpty() || selectedYogaCourseId.isEmpty() || binding.etCourse.text.toString().isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        saveDataToLocal(selectedYogaCourseId,selectedYogaCourseName,classDate, instructorName, description)
+        saveDataToLocal(
+            selectedYogaCourseId,
+            selectedYogaCourseName,
+            classDate,
+            instructorName,
+            description,
+            className
+        )
 
     }
 
-    private fun saveDataToLocal(courseId: String ,courseName: String, classDate: String, instructorName: String, description: String) {
+    private fun saveDataToLocal(
+        courseId: String, courseName: String, classDate: String,
+        instructorName: String, description: String, className: String
+    ) {
         val yogaClassInstance = YogaClassInstance(
+            classId = getRandomSixDigitNumber().toLong(),
+            className = className,
             courseId = courseId.toInt(),
             courseName = courseName,
             date = classDate,
@@ -203,7 +225,7 @@ class ClassDetailActivity : AppCompatActivity() {
             mClassInstanceVO?.teacher = instructorName
             mClassInstanceVO?.additionalComments = description
             mClassInstanceVO?.courseName = courseName
-
+            mClassInstanceVO?.className = className
 
 
             // Toast.makeText(this, "updateYogaCourse ${mClassInstanceVO}", Toast.LENGTH_SHORT).show()
@@ -213,58 +235,69 @@ class ClassDetailActivity : AppCompatActivity() {
 
     }
 
+    private fun getRandomSixDigitNumber(): Int {
+        return Random.nextInt(100000, 1000000) // Generates a number from 100000 to 999999
+    }
+
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog =
-            DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+        val datePickerDialog = DatePickerDialog(
+            this, { _, selectedYear, selectedMonth, selectedDay ->
+                // Set the date in "dd-MM-yyyy" format
                 binding.etDate.setText(
                     String.format(
-                        "%04d-%02d-%02d",
-                        selectedYear,
+                        "%02d-%02d-%04d",
+                        selectedDay,
                         selectedMonth + 1,
-                        selectedDay
+                        selectedYear
                     )
                 )
 
                 weekday = getDayOfWeek(selectedYear, selectedMonth, selectedDay)
-                Log.d("activity","weekday ${weekday}") // Output: Friday
+                Log.d("activity", "weekday $weekday") // Output: Friday
+
                 binding.etCourse.setText("")
                 selectedYogaCourse = null
                 getAllCourses(weekday)
                 binding.etCourse.visibility = View.VISIBLE
                 binding.tvCourse.visibility = View.VISIBLE
-            }, year, month, day)
+            }, year, month, day
+        )
 
         datePickerDialog.show()
     }
 
+
     private fun getAllCourses(weekday: String) {
-        Log.d("activity","getAllCourses") // Output: Friday
+        Log.d("activity", "getAllCourses ${weekday}") // Output: Friday
         yogaCourseViewModel.loadCoursesByWeekDay(weekday)
         yogaCourseViewModel.allCoursesByWeekDay.observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     // Show loading indicator if necessary
-                    Log.d("activity","getAllCourses1") // Output: Friday
+                    Log.d("activity", "getAllCourses1") // Output: Friday
                 }
 
                 is Resource.Success -> {
                     // Handle success, e.g., update UI or show a message
 
-                    Log.d("activity","getAllCourses2") // Output: Friday
+                    Log.d("activity", "getAllCourses2") // Output: Friday
                     resource.data?.let {
-                       listOfYogaCourseByWeekDay = it
-                        Log.d("activity","getAllCourses3 ${listOfYogaCourseByWeekDay}") // Output: Friday
+                        listOfYogaCourseByWeekDay = it
+                        Log.d(
+                            "activity",
+                            "getAllCourses3 ${listOfYogaCourseByWeekDay}"
+                        ) // Output: Friday
                     }
 
                 }
 
                 is Resource.Error -> {
-                    Log.d("activity","getAllCourses4") // Output: Friday
+                    Log.d("activity", "getAllCourses4") // Output: Friday
                     // Handle error, e.g., show an error message
                     Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -274,19 +307,17 @@ class ClassDetailActivity : AppCompatActivity() {
     }
 
     private fun getDayOfWeek(selectedYear: Int, selectedMonth: Int, selectedDay: Int): String {
-        // Format the date string
-        val dateString =
-            String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+        // Format the date string in "dd-MM-yyyy"
+        val dateString = String.format("%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
 
-        // Parse the date string
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        // Parse the date string with "dd-MM-yyyy" format
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val date = dateFormat.parse(dateString)
 
         // Get the day of the week
         val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
         return dayFormat.format(date ?: Date())
     }
-
 
     private fun insertYogaClassInstance(yogaClassInstance: YogaClassInstance) {
 
@@ -348,8 +379,8 @@ class ClassDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteYogaCourse(yogaClassInstance: YogaClassInstance) {
-        yogaClassViewModel.deleteCourse(yogaClassInstance)
+    private fun deleteYogaClassInstance(yogaClassInstance: YogaClassInstance) {
+        yogaClassViewModel.deleteClassInstance(yogaClassInstance)
 
         yogaClassViewModel.deleteClassInstanceStatus.observe(this) { resource ->
             when (resource) {
