@@ -51,7 +51,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
+                android:id="@+id/text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_card_medium_2"
@@ -69,7 +69,7 @@
                 app:boxStrokeWidth="0dp" >
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/searchEditText"
+                    android:id="@+id/dashboard_et_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -80,7 +80,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
-            android:layout_below="@id/textInputLayout"
+            android:layout_below="@id/text_input_layout"
                 android:layout_marginStart="@dimen/margin_card_medium_2"
                 android:layout_marginEnd="@dimen/margin_card_medium_2"
                 android:id="@+id/vpCourseList"

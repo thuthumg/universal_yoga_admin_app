@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,257 +7,312 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <!-- CollapsingToolbarLayout for fancy animations -->
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:background="@color/colorPrimary"
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="@drawable/main_title_banner_background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:clickable="true"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="start|center_vertical"
-                android:layout_marginStart="@dimen/margin_large"
-                android:focusable="true"
-                android:src="@drawable/get_started_bg" />
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Yoga Admin App"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayoutTitle"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
+                android:layout_height="@dimen/height_collapsing_main_page_toolbar"
+                app:collapsedTitleTextColor="@color/white"
+                app:contentScrim="@color/colorPrimary"
+                app:expandedTitleTextColor="@android:color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:title="Yoga Admin App">
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_card_medium_4"
+                    android:layout_marginEnd="@dimen/margin_card_medium_4"
+                    android:layout_marginBottom="@dimen/margin_card_medium_4"
+                    android:layout_marginTop="@dimen/margin_xlarge">
 
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:background="@color/white"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+                                            <ImageView
+                                                android:clickable="true"
+                                                android:id="@+id/iv_dashboard"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentStart="true"
+                                                android:src="@drawable/ic_dashboard" />
 
-        <LinearLayout
+                                            <ImageView
+                                                android:id="@+id/iv_notification"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentEnd="true"
+                                                android:src="@drawable/ic_notification" />
+
+                                            <TextView
+                                                android:id="@+id/toolbar_title"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_below="@id/iv_dashboard"
+                                                android:layout_marginTop="@dimen/margin_card_medium_4"
+                                                android:text="Yoga Admin App"
+                                                android:textColor="@color/white"
+                                                android:textSize="20sp"
+                                                android:textStyle="bold" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_marginTop="@dimen/margin_card_medium_4"
+                        android:layout_below="@id/toolbar_title"
+                        android:orientation="horizontal"
+                        android:id="@+id/search_layout"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:cardCornerRadius="12dp">
+                        <TextView
+                            android:layout_marginStart="@dimen/margin_card_medium_4"
+                            android:layout_gravity="center_vertical"
+                            android:text="Search..."
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/whiteDark8"
+                            android:drawablePadding="@dimen/margin_card_medium_2"
+                            app:drawableStartCompat="@drawable/baseline_search_24"
+                            android:textSize="@dimen/text_regular_2x"/>
+                    </com.google.android.material.card.MaterialCardView>
+
+
+
+                    </RelativeLayout>
+
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_marginBottom="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_centerVertical="true"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/profile_image"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_profile"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/profile_image"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:text="Hi, Admin"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout
-                android:layout_marginEnd="@dimen/margin_medium"
-                android:layout_marginStart="@dimen/margin_medium"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:id="@+id/linearLayout1"
-                    android:layout_width="0dp"
-                    android:layout_height="135dp"
-                    android:layout_margin="@dimen/margin_medium"
-                    android:background="@drawable/custom_frame2_background"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_card_medium_4">
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/course_icon" />
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_profile" />
+
                     <TextView
-                        android:id="@+id/tv_courses"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin_medium"
-                        android:gravity="center"
-                        android:text="Courses"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_toEndOf="@id/profile_image"
+                        android:text="Hi, Admin"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="135dp"
-                    android:layout_margin="@dimen/margin_medium"
-                    android:background="@drawable/custom_frame_background"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/class_icon" />
-                    <TextView
-
-                        android:id="@+id/tv_classes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin_medium"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:text="Classes"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_card_medium_4"
+                    android:layout_marginEnd="@dimen/margin_card_medium_4">
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout1"
+                        android:layout_width="0dp"
+                        android:layout_height="135dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/custom_frame2_background"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/course_icon" />
+
+                        <TextView
+                            android:id="@+id/tv_courses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_medium"
+                            android:gravity="center"
+                            android:text="Courses"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout2"
+                        android:layout_width="0dp"
+                        android:layout_height="135dp"
+                        android:layout_marginStart="@dimen/margin_card_medium_4"
+                        android:layout_weight="1"
+                        android:background="@drawable/custom_frame_background"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/class_icon" />
+
+                        <TextView
+
+                            android:id="@+id/tv_classes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_medium"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:text="Classes"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_courses_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_card_medium_4"
+                        android:layout_marginTop="@dimen/margin_card_medium_4"
+                        android:text="Courses"
+                        android:textColor="@color/colorOnBackground"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_courses_see_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_card_medium_4"
+                        android:layout_marginEnd="@dimen/margin_card_medium_4"
+                        android:clickable="true"
+                        android:text="See all"
+                        android:textColor="@color/whiteDark6"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
+                    android:id="@+id/vpCourseItemList"
+                    layout="@layout/view_pod_item_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_card_medium_2"
+                    android:layout_marginTop="@dimen/margin_card_medium_2"
+                    android:layout_marginEnd="@dimen/margin_card_medium_2" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:id="@+id/tv_classes_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_card_medium_4"
+                        android:layout_marginTop="@dimen/margin_card_medium_4"
+                        android:text="Classes"
+                        android:textColor="@color/colorOnBackground"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_classes_see_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_card_medium_4"
+                        android:layout_marginEnd="@dimen/margin_card_medium_4"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="See all"
+                        android:textColor="@color/whiteDark6"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.smh.ttm.universalyogaadminapp.viewpods.YogaClassListViewPod
+                    android:id="@+id/vpClassItemList"
+                    layout="@layout/view_pod_class_item_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_card_medium_2"
+                    android:layout_marginTop="@dimen/margin_card_medium_2"
+                    android:layout_marginEnd="@dimen/margin_card_medium_2" />
+
 
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                <TextView
-                    android:id="@+id/tv_courses_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_large"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:text="Courses"
-                    android:textColor="@color/colorOnBackground"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <!-- Transparent loading overlay covering everything -->
+    <View
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/tv_courses_see_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:layout_marginEnd="@dimen/margin_large"
-                    android:clickable="true"
-                    android:text="See all"
-                    android:textColor="@color/whiteDark6"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <!-- Centered ProgressBar on top of the overlay -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
+</FrameLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
-                android:layout_marginTop="@dimen/margin_large"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-
-                android:id="@+id/vpCourseItemList"
-                layout="@layout/view_pod_item_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:layout_marginStart="@dimen/margin_small"-->
-            <!--                android:layout_marginEnd="@dimen/margin_small"-->
-            <!--                android:id="@+id/rv_courses"-->
-            <!--                tools:listitem="@layout/view_holder_item"-->
-            <!--                tools:itemCount="3"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"/>-->
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-
-                    android:id="@+id/tv_classes_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_large"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:text="Classes"
-                    android:textColor="@color/colorOnBackground"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_classes_see_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:layout_marginEnd="@dimen/margin_large"
-                    android:clickable="true"
-                    android:text="See all"
-                    android:textColor="@color/whiteDark6"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.smh.ttm.universalyogaadminapp.viewpods.YogaClassListViewPod
-                android:layout_marginTop="@dimen/margin_large"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-                android:id="@+id/vpClassItemList"
-                layout="@layout/view_pod_class_item_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -42,83 +42,26 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
 
         // Force Light Mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-
-        setUpViewPods()
+        setUpUI()
         setUpListListener()
-
-        // Observe data
-        //Observe the class instances LiveData and update UI
-        yogaClassInstanceViewModel.allClassInstances.observe(this) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    // Show loading indicator if necessary
-
-                }
-
-                is Resource.Success -> {
-                    // Handle success, e.g., update UI or show a message
-
-
-                    resource.data?.let {
-                        classItemListViewPod.setData(this,itemList = it)
-
-                    }
-
-                }
-
-                is Resource.Error -> {
-                    // Handle error, e.g., show an error message
-                    Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-
-
-        yogaCourseViewModel.allCourses.observe(this) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    // Show loading indicator if necessary
-
-                }
-
-                is Resource.Success -> {
-                    // Handle success, e.g., update UI or show a message
-
-
-                    resource.data?.let {
-                        courseItemListViewPod.setData(this,itemList = it)
-
-                    }
-
-                }
-
-                is Resource.Error -> {
-                    // Handle error, e.g., show an error message
-                    Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
+        setUpObserveData()
 
     }
+    private fun setUpUI() {
+        setUpViewPods()
+    }
+    private fun setUpViewPods() {
+        courseItemListViewPod = binding.vpCourseItemList as ItemListViewPod
+        classItemListViewPod = binding.vpClassItemList as YogaClassListViewPod
 
-    // Sync from Firebase
-    //  yogaCourseViewModel.syncCoursesFromFirebase()
-
-
-
-    // Sync from Firebase
-    //  yogaClassInstanceViewModel.syncClassInstancesFromFirebase()
-
-
+    }
     private fun setUpListListener() {
         binding.linearLayout1.setOnClickListener {
             val intent = Intent(this, CourseItemListActivity::class.java)
@@ -140,11 +83,69 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
             val intent = Intent(this, CourseItemListActivity::class.java)
             startActivity(intent)
         }
-    }
 
-    private fun setUpViewPods() {
-        courseItemListViewPod = binding.vpCourseItemList as ItemListViewPod
-        classItemListViewPod = binding.vpClassItemList as YogaClassListViewPod
+        binding.searchLayout.setOnClickListener {
+
+            val intent = Intent(this, ClassItemListActivity::class.java)
+            startActivity(intent)
+        }
+    }
+    private fun setUpObserveData() {
+        // Observe data
+        yogaClassInstanceViewModel.allClassInstances.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    // Show loading indicator if necessary
+                  //  showLoading()
+                }
+
+                is Resource.Success -> {
+                    // Handle success, e.g., update UI or show a message
+
+                   // hideLoading()
+                    resource.data?.let {
+                        classItemListViewPod.setData(this,itemList = it)
+
+                    }
+
+                }
+
+                is Resource.Error -> {
+                    // Handle error, e.g., show an error message
+                   // hideLoading()
+                    Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+
+        yogaCourseViewModel.allCourses.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    // Show loading indicator if necessary
+                    showLoading()
+                }
+
+                is Resource.Success -> {
+                    // Handle success, e.g., update UI or show a message
+
+                    hideLoading()
+                    resource.data?.let {
+                        courseItemListViewPod.setData(this,itemList = it)
+
+                    }
+
+                }
+
+                is Resource.Error -> {
+                    // Handle error, e.g., show an error message
+                    hideLoading()
+                    Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
 
     }
 
@@ -156,4 +157,17 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
         startActivity(ClassDetailActivity.newIntent(this,yogaClassInstance))
     }
 
+
+    private fun showLoading() {
+        binding.loadingOverlay.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
+
+    }
+
+    // Function to hide loading and restore Toolbar background
+    private fun hideLoading() {
+        binding.loadingOverlay.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+
+    }
 }
