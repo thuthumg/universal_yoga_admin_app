@@ -245,19 +245,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.smh.ttm.universalyogaadminapp.viewpods.YogaClassListViewPod
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_large"
                 android:id="@+id/vpClassItemList"
                 layout="@layout/view_pod_class_item_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <!-- <androidx.recyclerview.widget.RecyclerView
-                 android:layout_marginBottom="?attr/actionBarSize"
-                 android:layout_marginStart="@dimen/margin_small"
-                 android:layout_marginEnd="@dimen/margin_small"
-                 android:id="@+id/rv_classes"
-                 tools:listitem="@layout/view_holder_item"
-                 tools:itemCount="3"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"/>-->
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
