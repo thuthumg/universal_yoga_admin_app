@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "384858079747",
+    "project_id": "yogaadminapp-5bd24",
+    "storage_bucket": "yogaadminapp-5bd24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384858079747:android:d9c847e7c226a5c8aa4436",
+        "android_client_info": {
+          "package_name": "com.smh.ttm.universalyogaadminapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqSbsvdfw2t7S2PH-WBZMQfNXeo1rTHvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/yogaclass"
+    tools:context=".YogaClassDetail">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayoutTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_collapsing_toolbar"
+            app:collapsedTitleTextColor="@color/white"
+            app:contentScrim="@color/colorPrimaryDark"
+            app:expandedTitleTextColor="@android:color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Yoga Course">
+
+
+            <FrameLayout
+                android:id="@+id/btnBack"
+                android:layout_width="@dimen/margin_xlarge"
+                android:layout_height="@dimen/margin_xlarge"
+                android:layout_marginStart="@dimen/margin_medium_2"
+                android:layout_marginTop="@dimen/margin_xlarge"
+                android:background="@drawable/background_back_button"
+                android:elevation="@dimen/margin_medium">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_back" />
+            </FrameLayout>
+
+            <!--    <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/margin_large"
+                    android:layout_height="@dimen/margin_large"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/margin_xlarge"
+                    android:layout_marginEnd="@dimen/margin_medium_2"
+                    android:elevation="@dimen/margin_small"
+                    app:srcCompat="@drawable/ic_search" />-->
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivMovieDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"
+                android:src="@drawable/yoga_img_background" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_actor"
+                app:layout_collapseMode="parallax" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+        <LinearLayout
+            android:layout_margin="@dimen/margin_large"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="@dimen/margin_medium"
+            android:orientation="vertical">
+
+            <!-- Day of the Week -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Day of the Week:"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/day_of_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Day"
+                android:focusable="false"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Time of Course -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time of Course:"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/course_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Time"
+                android:focusable="false"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Capacity -->
+            <TextView
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capacity:"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/capacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Number of persons"
+                android:inputType="number"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Duration -->
+            <TextView
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duration (minutes):"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Duration in minutes"
+                android:inputType="number"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Price per Class -->
+            <TextView
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price per Class:"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price (e.g. £10)"
+                android:inputType="numberDecimal"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Type of Class -->
+            <TextView
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type of Class:"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/type_of_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Class Type"
+                android:focusable="false"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Description -->
+            <TextView
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Optional description"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Additional Field: Location -->
+            <TextView
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location:"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Location"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Additional Field: Instructor Name -->
+            <TextView
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Instructor Name:"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginBottom="@dimen/margin_large"
+                android:id="@+id/instructor_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Instructor Name"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp" />
+
+            <!-- Submit Button -->
+            <Button
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

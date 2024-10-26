@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <!-- CollapsingToolbarLayout for fancy animations -->
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <ImageView
+                android:clickable="true"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="@dimen/margin_large"
+                android:focusable="true"
+                android:src="@drawable/get_started_bg" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Yoga Admin App"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:background="@color/white"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_centerVertical="true"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_profile"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/profile_image"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:text="Hi, Admin"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:id="@+id/linearLayout1"
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_margin="@dimen/margin_medium"
+                    android:background="@drawable/custom_frame2_background"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/course_icon" />
+                    <TextView
+                        android:id="@+id/tv_courses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_medium"
+                        android:gravity="center"
+                        android:text="Courses"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_margin="@dimen/margin_medium"
+                    android:background="@drawable/custom_frame_background"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/class_icon" />
+                    <TextView
+
+                        android:id="@+id/tv_classes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_medium"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:text="Classes"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_courses_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="Courses"
+                    android:textColor="@color/colorOnBackground"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_courses_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:clickable="true"
+                    android:text="See all"
+                    android:textColor="@color/whiteDark6"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_large"
+
+                android:id="@+id/vpCourseItemList"
+                layout="@layout/view_pod_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                android:layout_marginStart="@dimen/margin_small"-->
+            <!--                android:layout_marginEnd="@dimen/margin_small"-->
+            <!--                android:id="@+id/rv_courses"-->
+            <!--                tools:listitem="@layout/view_holder_item"-->
+            <!--                tools:itemCount="3"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"/>-->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:id="@+id/tv_classes_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="Classes"
+                    android:textColor="@color/colorOnBackground"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_classes_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:clickable="true"
+                    android:text="See all"
+                    android:textColor="@color/whiteDark6"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.smh.ttm.universalyogaadminapp.viewpods.YogaClassListViewPod
+                android:id="@+id/vpClassItemList"
+                layout="@layout/view_pod_class_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <!-- <androidx.recyclerview.widget.RecyclerView
+                 android:layout_marginBottom="?attr/actionBarSize"
+                 android:layout_marginStart="@dimen/margin_small"
+                 android:layout_marginEnd="@dimen/margin_small"
+                 android:id="@+id/rv_classes"
+                 tools:listitem="@layout/view_holder_item"
+                 tools:itemCount="3"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"/>-->
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

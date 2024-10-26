@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".activities.GetStartedActivity">
+    <LinearLayout
+        android:gravity="center"
+        android:background="@drawable/right_rounded_background"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/get_started_bg"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:background="@color/colorPrimary"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:background="@drawable/left_rounded_background"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <TextView
+                android:layout_marginTop="@dimen/margin_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorOnSecondary"
+                    android:text="Manage Your Yoga Studio"/>
+            <TextView
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="16sp"
+                android:textColor="@color/whiteDark8"
+                android:text="Easily handle class schedules, manage teachers, and track progress with our Yoga Admin App. Stay organized and in control wherever you are."/>
+
+
+
+        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:layout_gravity="center"
+            android:id="@+id/btnGetStarted"
+            android:layout_marginTop="@dimen/margin_large"
+            android:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="12dp"
+            android:layout_width="200dp"
+            android:textColor="@color/white"
+            android:layout_height="56dp"
+            android:text="Get Start"/>
+    </FrameLayout>
+
+</LinearLayout>

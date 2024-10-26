@@ -1,0 +1,35 @@
+<!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:shape="oval">-->
+
+<!--    &lt;!&ndash; Circle Fill Color &ndash;&gt;-->
+<!--    <solid android:color="#70DF8E" />-->
+
+<!--    &lt;!&ndash; Optional: Circle Border &ndash;&gt;-->
+<!--    <stroke-->
+<!--        android:width="1dp"-->
+<!--        android:color="@color/white" />-->
+
+<!--    &lt;!&ndash; Size of the Circle &ndash;&gt;-->
+<!--    <size-->
+<!--        android:width="50dp"-->
+<!--        android:height="50dp" />-->
+<!--</shape>-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Set the solid color for the background -->
+    <solid android:color="#70DF8E" /> <!-- Replace with your desired color -->
+
+    <!-- Define the corner radius. Set the radius to 0dp for the left corners, and apply a radius for the right corners. -->
+    <!--<corners
+        android:topLeftRadius="100dp"
+        android:topRightRadius="100dp"
+        android:bottomLeftRadius="100dp"
+        android:bottomRightRadius="100dp" />-->
+
+    <corners
+        android:topLeftRadius="12dp"
+        android:topRightRadius="12dp"
+        android:bottomLeftRadius="12dp"
+        android:bottomRightRadius="12dp" />
+</shape>

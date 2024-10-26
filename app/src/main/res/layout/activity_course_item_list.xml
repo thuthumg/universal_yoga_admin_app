@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.CourseItemListActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <!-- CollapsingToolbarLayout for fancy animations -->
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <TextView
+
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Yoga Courses"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+           <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+               android:layout_height="?attr/actionBarSize" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_card_medium_2"
+                app:boxBackgroundColor="@color/whiteDark2"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeColor="@color/whiteDark10"
+                app:boxStrokeWidthFocused="0dp"
+                app:endIconMode="clear_text"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/baseline_search_24"
+                app:boxStrokeWidth="0dp" >
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableStart="@drawable/baseline_search_24"
+                    android:hint="Search here..."
+                    android:padding="10dp" />  <!-- No background to see the TextInputLayout background -->
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
+            android:layout_below="@id/textInputLayout"
+                android:layout_marginStart="@dimen/margin_card_medium_2"
+                android:layout_marginEnd="@dimen/margin_card_medium_2"
+                android:id="@+id/vpCourseList"
+                layout="@layout/view_pod_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_create_New"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:src="@drawable/baseline_add_24"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@color/white" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+
+
+
