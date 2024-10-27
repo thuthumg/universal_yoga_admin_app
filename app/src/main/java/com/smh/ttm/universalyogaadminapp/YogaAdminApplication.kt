@@ -3,6 +3,7 @@ package com.smh.ttm.universalyogaadminapp
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.smh.ttm.universalyogaadminapp.persistence.YogaDatabase
 import com.smh.ttm.universalyogaadminapp.repository.YogaRepository
@@ -11,11 +12,14 @@ class YogaAdminApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.d("application","Application create")
         checkAndSyncData()
     }
 
     private fun checkAndSyncData() {
+        Log.d("application","checkAndSyncData")
         if (isInternetAvailable()) {
+            Log.d("application","internet available")
             // Assume you have a repository instance available
             val yogaCourseDao = YogaDatabase.getDatabase(this).yogaCourseDao()
             val yogaClassInstanceDao = YogaDatabase.getDatabase(this).yogaClassInstanceDao()

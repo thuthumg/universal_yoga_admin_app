@@ -73,40 +73,44 @@ class YogaClassInstanceViewModel(application: Application) : AndroidViewModel(ap
             })
     }
     //SearchByTeacher
-    fun searchByTeacher(teacher:String) {
-//        _allClassInstances.value = Resource.Loading()  // Emit loading state
-//
-//        repository.searchByTeacher(teacher)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
+//    fun searchByTeacher(teacher:String) {
+////        _allClassInstances.value = Resource.Loading()  // Emit loading state
+////
+////        repository.searchByTeacher(teacher)
+////            .subscribeOn(Schedulers.io())
+////            .observeOn(AndroidSchedulers.mainThread())
+////            .subscribe({ classInstances ->
+////                _allClassInstances.value = Resource.Success(classInstances)  // Emit success state
+////            }, { error ->
+////                _allClassInstances.value = Resource.Error("Failed to load courses: ${error.message}")  // Emit error state
+////            })
+//        searchSubject
+//            .debounce(500, TimeUnit.MILLISECONDS) // Adjust debounce time as needed
+//            .filter { it.isNotEmpty() } // Optional: Ignore empty queries
+//            .switchMap { teacher ->
+//                repository.searchByTeacher(teacher)
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .onErrorReturn { emptyList() } // Handle errors gracefully
+//            }
 //            .subscribe({ classInstances ->
-//                _allClassInstances.value = Resource.Success(classInstances)  // Emit success state
+//                _allClassInstances.value = Resource.Success(classInstances) // Emit results
 //            }, { error ->
-//                _allClassInstances.value = Resource.Error("Failed to load courses: ${error.message}")  // Emit error state
+//                _allClassInstances.value = Resource.Error("Failed to search: ${error.message}") // Emit error state
 //            })
-        searchSubject
-            .debounce(500, TimeUnit.MILLISECONDS) // Adjust debounce time as needed
-            .filter { it.isNotEmpty() } // Optional: Ignore empty queries
-            .switchMap { teacher ->
-                repository.searchByTeacher(teacher)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn { emptyList() } // Handle errors gracefully
-            }
-            .subscribe({ classInstances ->
-                _allClassInstances.value = Resource.Success(classInstances) // Emit results
-            }, { error ->
-                _allClassInstances.value = Resource.Error("Failed to search: ${error.message}") // Emit error state
-            })
-
-        searchSubject.onNext(teacher) // Emit the search query
+//
+//        searchSubject.onNext(teacher) // Emit the search query
+//    }
+    fun searchByTeacher(teacher: String): Observable<List<YogaClassInstance>> {
+        return repository.searchByTeacher(teacher)
+            .onErrorResumeNext { _: Throwable -> Observable.just(emptyList()) } // Specify lambda to resolve overload
+            .subscribeOn(Schedulers.io())
     }
 
-    //SearchByDate
-    fun searchByDate(searchDate:String) {
-        _allClassInstances.value = Resource.Loading()  // Emit loading state
+    fun searchByDateRange(sDate:String,eDate:String) {
+         _allClassInstances.value = Resource.Loading()  // Emit loading state
 
-        repository.searchByDate(searchDate)
+        repository.searchByDateRange(sDate,eDate)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ classInstances ->
@@ -115,6 +119,20 @@ class YogaClassInstanceViewModel(application: Application) : AndroidViewModel(ap
                 _allClassInstances.value = Resource.Error("Failed to load courses: ${error.message}")  // Emit error state
             })
     }
+
+    //SearchByDate
+//    fun searchByDate(searchDate:String) {
+//        _allClassInstances.value = Resource.Loading()  // Emit loading state
+//
+//        repository.searchByDate(searchDate)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({ classInstances ->
+//                _allClassInstances.value = Resource.Success(classInstances)  // Emit success state
+//            }, { error ->
+//                _allClassInstances.value = Resource.Error("Failed to load courses: ${error.message}")  // Emit error state
+//            })
+//    }
 
     // Insert a new class instance with Resource handling
     fun insertClassInstance(yogaClassInstance: YogaClassInstance) {

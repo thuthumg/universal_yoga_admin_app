@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/course_item_main"
+    android:id="@+id/class_item_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CourseItemListActivity">
+    tools:context=".activities.ClassItemListActivity">
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,15 +24,27 @@
                 android:fitsSystemWindows="true">
 
                 <TextView
-
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Yoga Courses"
+                    android:text="Yoga Classes"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/iv_filter"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="@dimen/margin_card_medium_4"
+                    app:backgroundTint="@color/white"
+                    app:icon="@drawable/ic_filter"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/black" />
+
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -50,19 +62,20 @@
             android:background="@color/white"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_card_medium_4"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_marginStart="@dimen/margin_card_medium_4"
-                    android:layout_marginEnd="@dimen/margin_card_medium_4"
-                    android:id="@+id/ll_search_by_course"
+                    android:id="@+id/ll_search_by_teacher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_card_medium_4"
                     android:orientation="horizontal"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_layout"
@@ -85,12 +98,12 @@
 
                         <com.google.android.material.textfield.TextInputEditText
 
-                            android:id="@+id/et_search_course"
+                            android:id="@+id/class_et_search"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:drawableStart="@drawable/baseline_search_24"
-                            android:hint="Search by course"
+                            android:hint="Search here..."
                             android:padding="10dp" />  <!-- No background to see the TextInputLayout background -->
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -114,16 +127,73 @@
 
                 </LinearLayout>
 
-                <com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
-                    android:layout_below="@id/ll_search_by_course"
-                    android:layout_marginTop="@dimen/margin_card_medium_4"
-                    android:layout_marginStart="@dimen/margin_card_medium_4"
-                    android:layout_marginEnd="@dimen/margin_card_medium_4"
-                    android:id="@+id/vpCourseList"
-                    layout="@layout/view_pod_item_list"
+                <LinearLayout
+                    android:id="@+id/ll_search_by_date"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_card_medium_4"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:text="Start Date"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_start_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_large"
+                        android:background="@drawable/edit_text_background"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:focusable="false"
+                        android:hint="Select Date"
+                        android:padding="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:text="End Date"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_end_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_large"
+                        android:background="@drawable/edit_text_background"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:focusable="false"
+                        android:hint="Select Date"
+                        android:padding="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSearch"
+                        android:layout_width="200dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="Search"
+                        android:textColor="@color/white"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+
+                <com.smh.ttm.universalyogaadminapp.viewpods.YogaClassListViewPod
+                    android:id="@+id/vpClassList"
+                    layout="@layout/view_pod_class_item_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_card_medium_4" />
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -136,6 +206,7 @@
             android:src="@drawable/baseline_add_24"
             app:backgroundTint="@color/colorPrimary"
             app:tint="@color/white" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <TextView
@@ -143,11 +214,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="16sp"
         android:text="No data found"
-        android:textStyle="bold"
         android:textColor="@color/whiteDark8"
-        android:visibility="gone"/>
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
     <!-- Transparent loading overlay covering everything -->
     <View
         android:id="@+id/loading_overlay"
@@ -163,9 +234,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone" />
+
 </FrameLayout>
-
-
 
 
 

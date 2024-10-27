@@ -2,6 +2,8 @@ package com.smh.ttm.universalyogaadminapp.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +19,10 @@ import com.smh.ttm.universalyogaadminapp.delegates.CourseItemDelegate
 import com.smh.ttm.universalyogaadminapp.mvvm.Resource
 import com.smh.ttm.universalyogaadminapp.mvvm.YogaCourseViewModel
 import com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
 
@@ -81,8 +87,35 @@ class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
             }
         }
     }
+    private fun searchClickListener(){
+        Observable.create<String> { emitter ->
+            binding.etSearchCourse.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    emitter.onNext(s.toString())
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+        }
+            .debounce(500L, TimeUnit.MILLISECONDS)
+            .flatMap { query ->
+                yogaCourseViewModel.searchByCourseType(query)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ results ->
+                courseItemListViewPod.setData(this, results)
+            }, { error ->
+                showError(error.localizedMessage ?: "An error occurred")
+            })
+    }
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
     private fun clickListener() {
+        searchClickListener()
         binding.fbCreateNew.setOnClickListener {
 
             val intent = Intent(this, CourseDetailActivity::class.java)

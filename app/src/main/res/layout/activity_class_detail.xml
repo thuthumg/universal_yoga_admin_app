@@ -135,7 +135,7 @@
                 android:background="@drawable/edit_text_background"
                 android:drawableEnd="@drawable/ic_calendar"
                 android:focusable="false"
-                android:hint="Select Day"
+                android:hint="Select Date"
                 android:padding="12dp" />
 
 

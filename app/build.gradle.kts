@@ -96,6 +96,18 @@ dependencies {
    implementation(libs.circleimageview)
 
     implementation(libs.rxandroid)
+   // implementation ("com.jakewharton.rxbinding4:rxbinding:4.0.0")
+
+    //RxKotlin
+//    implementation ("io.reactivex.rxjava3:rxkotlin:3.0.0")
+//    implementation ("io.reactivex.rxjava3:rxandroid:3.0.0")
+//    implementation ("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
+//
+//
+//    //RxBiniding
+//    implementation ("com.jakewharton.rxbinding4:rxbinding-core:4.0.0")
+//    implementation ("com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0")
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

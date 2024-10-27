@@ -27,6 +27,10 @@ interface YogaCourseDao {
     @Query("SELECT * FROM yoga_course_table  WHERE dayOfWeek = :weekDay ")
     fun getAllCoursesByDayOfTheWeek(weekDay: String): Observable<List<YogaCourse>>
 
+    // Search by teacher
+    @Query("SELECT * FROM yoga_course_table WHERE type LIKE '%' || :courseType || '%'")
+    fun searchByCourseType(courseType: String): Observable<List<YogaCourse>>
+
     // Delete a course with Completable
     @Delete
     fun delete(yogaCourse: YogaCourse): Completable

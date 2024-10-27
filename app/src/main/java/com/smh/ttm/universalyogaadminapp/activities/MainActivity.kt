@@ -2,13 +2,20 @@ package com.smh.ttm.universalyogaadminapp.activities
 
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.HandlerCompat.postDelayed
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.smh.ttm.universalyogaadminapp.R
 import com.smh.ttm.universalyogaadminapp.data.YogaClassInstance
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.databinding.ActivityMainBinding
@@ -21,7 +28,7 @@ import com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
 import com.smh.ttm.universalyogaadminapp.viewpods.YogaClassListViewPod
 
 
-class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegate {
+class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegate{
 
     //View Pods
     private lateinit var courseItemListViewPod: ItemListViewPod
@@ -36,11 +43,12 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // setContentView(R.layout.activity_main)
+       // val toolbar: Toolbar = findViewById(R.id.toolbar)
 
         // Force Light Mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.swipeRefreshLayout)) { v, insets ->
 //            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
 //            insets
@@ -49,6 +57,8 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
         setUpUI()
         setUpListListener()
         setUpObserveData()
+
+
 
     }
     private fun setUpUI() {
@@ -59,7 +69,38 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
         classItemListViewPod = binding.vpClassItemList as YogaClassListViewPod
 
     }
+    private fun refreshData() {
+        // Example of a refresh operation, like a data reload
+        binding.swipeRefreshLayout.isRefreshing = true  // Show loading spinner
+
+        // Simulate a network or data fetch with a delay (use real data loading here)
+        binding.nsScrollView.postDelayed({
+            // Refreshing done
+            yogaCourseViewModel.loadCourses()
+            yogaClassInstanceViewModel.loadClassInstances()
+            binding.swipeRefreshLayout.isRefreshing = false  // Hide loading spinner
+        }, 2000)  // Delay for 2 seconds
+    }
+//    private fun refreshData() {
+//        // Simulate data loading
+//        // For example, you could fetch new data from an API
+//        binding.swipeRefreshLayout.isRefreshing = true // Show the refreshing spinner
+//
+//        // This is just a simulation; replace with actual data refresh logic
+//        yogaCourseViewModel.loadCourses()
+//        yogaClassInstanceViewModel.loadClassInstances()
+//
+//        // Stop the refreshing animation after data is loaded
+//        binding.swipeRefreshLayout.isRefreshing = false
+//    }
     private fun setUpListListener() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
+        // Control SwipeRefreshLayout to refresh only when at the top
+        binding.swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
+            binding.nsScrollView.scrollY > 0
+        }
         binding.linearLayout1.setOnClickListener {
             val intent = Intent(this, CourseItemListActivity::class.java)
             startActivity(intent)
@@ -67,13 +108,13 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
 
         binding.linearLayout2.setOnClickListener {
 
-            val intent = Intent(this, ClassItemListActivity::class.java)
+            val intent = Intent(this, YogaClassListActivity::class.java)
             startActivity(intent)
         }
 
         binding.tvClassesSeeAll.setOnClickListener {
 
-            val intent = Intent(this, ClassItemListActivity::class.java)
+            val intent = Intent(this, YogaClassListActivity::class.java)
             startActivity(intent)
         }
         binding.tvCoursesSeeAll.setOnClickListener {
@@ -83,7 +124,7 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
 
         binding.searchLayout.setOnClickListener {
 
-            val intent = Intent(this, ClassItemListActivity::class.java)
+            val intent = Intent(this, YogaClassListActivity::class.java)
             startActivity(intent)
         }
     }

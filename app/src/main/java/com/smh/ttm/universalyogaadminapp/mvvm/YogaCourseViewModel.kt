@@ -7,9 +7,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
+import com.smh.ttm.universalyogaadminapp.data.YogaClassInstance
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.persistence.YogaDatabase
 import com.smh.ttm.universalyogaadminapp.repository.YogaRepository
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -55,7 +57,7 @@ class YogaCourseViewModel(application: Application) : AndroidViewModel(applicati
                 _allCoursesByWeekDay.value = Resource.Error("Failed to load courses: ${error.message}")  // Emit error state
             })
     }
-    private fun loadCourses() {
+     fun loadCourses() {
         _allCourses.value = Resource.Loading()  // Emit loading state
 
         repository.getAllCourses()
@@ -120,5 +122,9 @@ class YogaCourseViewModel(application: Application) : AndroidViewModel(applicati
             })
     }
 
-
+    fun searchByCourseType(courseType: String): Observable<List<YogaCourse>> {
+        return repository.searchByCourseType(courseType)
+            .onErrorResumeNext { _: Throwable -> Observable.just(emptyList()) } // Specify lambda to resolve overload
+            .subscribeOn(Schedulers.io())
+    }
 }

@@ -23,6 +23,9 @@
             android:name=".activities.ClassItemListActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.YogaClassListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.CourseItemListActivity"
             android:exported="false" />
         <activity

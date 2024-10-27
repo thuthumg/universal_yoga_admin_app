@@ -37,10 +37,13 @@ interface YogaClassInstanceDao {
     @Query("SELECT * FROM yoga_class_instance_table WHERE teacher LIKE '%' || :teacher || '%'")
     fun searchByTeacher(teacher: String): Observable<List<YogaClassInstance>>
 
-    // Search by date
-    @Query("SELECT * FROM yoga_class_instance_table WHERE date = :date")
-    fun searchByDate(date: String): Observable<List<YogaClassInstance>>
+//    // Search by date
+//    @Query("SELECT * FROM yoga_class_instance_table WHERE date = :date")
+//    fun searchByDate(date: String): Observable<List<YogaClassInstance>>
 
+    // Search by date range
+    @Query("SELECT * FROM yoga_class_instance_table WHERE date BETWEEN :startDate AND :endDate")
+    fun searchByDateRange(startDate: String, endDate: String): Observable<List<YogaClassInstance>>
 
     // Combined search
     @Query("""

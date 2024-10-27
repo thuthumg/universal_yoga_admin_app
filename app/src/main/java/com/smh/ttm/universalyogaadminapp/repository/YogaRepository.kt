@@ -113,6 +113,12 @@ class YogaRepository(
             .subscribeOn(Schedulers.io())  // Specify background thread for the operation
     }
 
+    fun searchByCourseType(courseType:String): Observable<List<YogaCourse>> {
+        return yogaCourseDao.searchByCourseType(courseType)
+            .subscribeOn(Schedulers.io())  // Specify background thread for the operation
+    }
+
+
 
     // Fetch all courses as an Observable
     fun getAllClassInstances(): Observable<List<YogaClassInstance>> {
@@ -129,7 +135,7 @@ class YogaRepository(
     // Sync course to Firebase
     private fun syncCourseToFirebase(yogaCourse: YogaCourse) {
         firebaseDb.collection("yoga_courses")
-            .document(yogaCourse.id.toString())
+            .document(yogaCourse.courseId.toString())
             .set(yogaCourse)
             .addOnSuccessListener {
                 Log.d("repository", "Sync course to Firebase successfully ")
@@ -142,7 +148,7 @@ class YogaRepository(
     // Sync class instance to Firebase
     private fun syncClassInstanceToFirebase(yogaClassInstance: YogaClassInstance) {
         firebaseDb.collection("yoga_class_instances")
-            .document(yogaClassInstance.id.toString())
+            .document(yogaClassInstance.classId.toString())
             .set(yogaClassInstance)
             .addOnSuccessListener {
                 Log.d("repository", "Sync course to Firebase successfully ")
@@ -216,6 +222,7 @@ class YogaRepository(
     }
 
     fun syncClassInstancesFromRoomToFirebase() {
+        Log.d("repository","syncClassInstanceToFirebase from application")
         getAllClassInstances()  // Fetch courses from Room
             .subscribe { classInstances ->
                 for (classInstance in classInstances) {
@@ -231,8 +238,8 @@ class YogaRepository(
     }
 
     //SearchByDate
-    fun searchByDate(date:String): Observable<List<YogaClassInstance>> {
-        return yogaClassInstanceDao.searchByDate(date)
+    fun searchByDateRange(sDate:String,eDate:String): Observable<List<YogaClassInstance>> {
+        return yogaClassInstanceDao.searchByDateRange(sDate,eDate)
             .subscribeOn(Schedulers.io())  // Specify background thread for the operation
     }
 

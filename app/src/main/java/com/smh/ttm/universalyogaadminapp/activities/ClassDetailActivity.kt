@@ -267,7 +267,7 @@ class ClassDetailActivity : AppCompatActivity() {
                 binding.tvCourse.visibility = View.VISIBLE
             }, year, month, day
         )
-
+        datePickerDialog.datePicker.minDate = calendar.timeInMillis
         datePickerDialog.show()
     }
 
