@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.smh.ttm.universalyogaadminapp.CourseTypeDialogFragment
+import com.smh.ttm.universalyogaadminapp.dialog.CourseTypeDialogFragment
 import com.smh.ttm.universalyogaadminapp.R
 import com.smh.ttm.universalyogaadminapp.data.YogaClassInstance
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
@@ -55,7 +55,6 @@ class ClassDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // setContentView(R.layout.activity_class_detail)
         binding = ActivityClassDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -66,7 +65,7 @@ class ClassDetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Enables back arrow
         binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.black))
-
+        binding.ivImg.setImageResource(R.drawable.default_yoga_img)
         getIntentParam()
         clickListener()
 
@@ -124,11 +123,6 @@ class ClassDetailActivity : AppCompatActivity() {
                 getAllCourses(weekday)
                 binding.etCourse.setText(mClassInstanceVO?.courseName)
 
-//                if (binding.etDate.text.isNullOrEmpty()) {
-//
-//                }
-
-
                 binding.btnClassSave.text = "Update"
             }
         }
@@ -166,15 +160,7 @@ class ClassDetailActivity : AppCompatActivity() {
             binding.etCourse.setText(selectedCourse.courseName)
         }
         dialog.show(supportFragmentManager, "CourseTypeDialog")
-        /*
 
-
-                val dialog = CourseTypeDialogFragment()
-                dialog.setOnClassTypeSelectedListener { selectedType ->
-                    // Handle the selected class type here, e.g., display it in a TextView
-                    binding.etCourse.setText(selectedType)
-                }
-                dialog.show(supportFragmentManager, "ClassTypeDialog")*/
     }
 
     private fun handleClassSave() {
@@ -275,6 +261,7 @@ class ClassDetailActivity : AppCompatActivity() {
     private fun getAllCourses(weekday: String) {
         Log.d("activity", "getAllCourses ${weekday}") // Output: Friday
         yogaCourseViewModel.loadCoursesByWeekDay(weekday)
+
         yogaCourseViewModel.allCoursesByWeekDay.observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {

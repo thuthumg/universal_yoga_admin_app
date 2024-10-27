@@ -9,7 +9,7 @@ import com.smh.ttm.universalyogaadminapp.databinding.ViewHolderClassItemBinding
 import com.smh.ttm.universalyogaadminapp.delegates.YogaClassItemDelegate
 import com.smh.ttm.universalyogaadminapp.viewholders.YogaClassViewHolder
 
-class YogaClassItemAdapter(var onTapClassItemDelegate: YogaClassItemDelegate) : RecyclerView.Adapter<YogaClassViewHolder>() {
+class YogaClassItemAdapter(private var onTapClassItemDelegate: YogaClassItemDelegate) : RecyclerView.Adapter<YogaClassViewHolder>() {
     private var mItemList: List<YogaClassInstance> = listOf()
     lateinit var binding: ViewHolderClassItemBinding
 

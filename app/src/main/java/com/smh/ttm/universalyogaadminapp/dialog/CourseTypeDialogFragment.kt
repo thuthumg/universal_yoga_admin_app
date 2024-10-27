@@ -1,4 +1,4 @@
-package com.smh.ttm.universalyogaadminapp
+package com.smh.ttm.universalyogaadminapp.dialog
 
 import android.app.Dialog
 import android.os.Bundle

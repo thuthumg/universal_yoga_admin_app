@@ -12,7 +12,6 @@ class GetStartedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // setContentView(R.layout.activity_get_started)
 
         binding = ActivityGetStartedBinding.inflate(layoutInflater)
         setContentView(binding.root)

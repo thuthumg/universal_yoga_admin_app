@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/yoga_img_background" />
+                    tools:src="@drawable/yoga_img_background" />
                 <!--         <FrameLayout-->
                 <!--             android:layout_gravity="center"-->
                 <!--                android:id="@+id/btnBack"-->

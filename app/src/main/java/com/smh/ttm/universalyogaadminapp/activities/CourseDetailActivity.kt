@@ -17,10 +17,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.smh.ttm.universalyogaadminapp.R
-import com.smh.ttm.universalyogaadminapp.adapters.ClassTypeAdapter
-import com.smh.ttm.universalyogaadminapp.adapters.DayOfWeekAdapter
-import com.smh.ttm.universalyogaadminapp.data.ClassTypeItem
-import com.smh.ttm.universalyogaadminapp.data.DayOfWeekItem
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.databinding.ActivityCourseDetailBinding
 import com.smh.ttm.universalyogaadminapp.dummy.classTypes
@@ -34,11 +30,10 @@ import kotlin.random.Random
 class CourseDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCourseDetailBinding
 
-    // Create ViewModel with the help of ViewModelFactory
-    var checkedClassTypeItem = intArrayOf(-1)
-    var checkedDaysOfWeekItem = intArrayOf(-1)
+    private var checkedClassTypeItem = intArrayOf(-1)
+    private var checkedDaysOfWeekItem = intArrayOf(-1)
     private val yogaCourseViewModel: YogaCourseViewModel by viewModels()
-    var mCourseVO: YogaCourse? = null
+    private var mCourseVO: YogaCourse? = null
 
     companion object {
 
@@ -94,6 +89,8 @@ class CourseDetailActivity : AppCompatActivity() {
     }
 
     private fun getIntentParam() {
+
+
         val intent = intent
 
         if (intent.getSerializableExtra(YOGA_COURSE_VO) == null) {
@@ -135,6 +132,23 @@ class CourseDetailActivity : AppCompatActivity() {
                 binding.btnSubmit.text = "Update"
             }
         }
+
+
+
+
+        when(binding.typeOfClass.text.toString())
+        {
+            classTypes[0]->{
+                binding.ivImg.setImageResource(R.drawable.flow_yoga)
+            }
+            classTypes[1] -> {
+                binding.ivImg.setImageResource(R.drawable.arial_yoga)
+            }
+            classTypes[2] -> {
+                binding.ivImg.setImageResource(R.drawable.family_yoga)
+            }
+        }
+
 
     }
 

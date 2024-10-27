@@ -175,18 +175,6 @@ class YogaClassListActivity : AppCompatActivity(), YogaClassItemDelegate {
 
         datePickerDialog.show()
     }
-//    private fun setUpSearchListener() {
-//        binding.classEtSearch
-//            .textChanges() // Observes text changes
-//            .debounce(500, TimeUnit.MILLISECONDS) // Waits for the user to stop typing
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribeOn(Schedulers.io())
-//            .subscribe({ query ->
-//                performSearch(query.toString()) // Perform search when text changes
-//            }, { error ->
-//                Toast.makeText(this, "Error: ${error.localizedMessage}", Toast.LENGTH_SHORT).show()
-//            })
-//    }
 
    // For rxjava2 version code
     private fun setUpSearchListener() {
@@ -264,6 +252,7 @@ class YogaClassListActivity : AppCompatActivity(), YogaClassItemDelegate {
                 binding.llSearchByDate.visibility = View.GONE
                 binding.llSearchByTeacher.visibility = View.VISIBLE
                 binding.classEtSearch.hint = filterType
+
                 yogaClassViewModel.loadClassInstances()
             }
             filterTypes[1]->{
@@ -271,6 +260,7 @@ class YogaClassListActivity : AppCompatActivity(), YogaClassItemDelegate {
                 binding.llSearchByTeacher.visibility = View.GONE
                 binding.etStartDate.setText(getCurrentDate())// add current date
                 binding.etEndDate.setText(getCurrentDate())// add current date
+
                 yogaClassViewModel.searchByDateRange(getCurrentDate(),getCurrentDate())
 
             }
@@ -279,7 +269,7 @@ class YogaClassListActivity : AppCompatActivity(), YogaClassItemDelegate {
 
     }
 
-    fun getCurrentDate(): String {
+    private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy")
         val currentDate = Date()
         return dateFormat.format(currentDate)

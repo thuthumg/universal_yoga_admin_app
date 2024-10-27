@@ -33,7 +33,6 @@ class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // setContentView(R.layout.activity_course_item_list)
         binding = ActivityCourseItemListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.course_item_main)) { v, insets ->
@@ -118,8 +117,9 @@ class CourseItemListActivity : AppCompatActivity(), CourseItemDelegate {
         searchClickListener()
         binding.fbCreateNew.setOnClickListener {
 
-            val intent = Intent(this, CourseDetailActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, CourseDetailActivity::class.java)
+//            startActivity(intent)
+            startActivity(CourseDetailActivity.newIntent(this,null))
         }
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Enables back arrow

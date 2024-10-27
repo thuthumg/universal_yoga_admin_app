@@ -46,13 +46,13 @@ interface YogaClassInstanceDao {
     fun searchByDateRange(startDate: String, endDate: String): Observable<List<YogaClassInstance>>
 
     // Combined search
-    @Query("""
-        SELECT * FROM yoga_class_instance_table 
-        WHERE (:teacher IS NULL OR teacher LIKE '%' || :teacher || '%') 
-        AND (:date IS NULL OR date = :date)
-    """)
-    fun search(
-        teacher: String? = null,
-        date: String? = null
-    ): Observable<List<YogaClassInstance>>
+//    @Query("""
+//        SELECT * FROM yoga_class_instance_table
+//        WHERE (:teacher IS NULL OR teacher LIKE '%' || :teacher || '%')
+//        AND (:date IS NULL OR date = :date)
+//    """)
+//    fun search(
+//        teacher: String? = null,
+//        date: String? = null
+//    ): Observable<List<YogaClassInstance>>
 }

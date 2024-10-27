@@ -28,7 +28,7 @@ import com.smh.ttm.universalyogaadminapp.viewpods.ItemListViewPod
 import com.smh.ttm.universalyogaadminapp.viewpods.YogaClassListViewPod
 
 
-class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegate{
+class MainActivity : AppCompatActivity(), CourseItemDelegate, YogaClassItemDelegate {
 
     //View Pods
     private lateinit var courseItemListViewPod: ItemListViewPod
@@ -42,33 +42,26 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // setContentView(R.layout.activity_main)
-       // val toolbar: Toolbar = findViewById(R.id.toolbar)
 
         // Force Light Mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.swipeRefreshLayout)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
         setUpUI()
         setUpListListener()
         setUpObserveData()
 
-
-
     }
+
     private fun setUpUI() {
         setUpViewPods()
     }
+
     private fun setUpViewPods() {
         courseItemListViewPod = binding.vpCourseItemList as ItemListViewPod
         classItemListViewPod = binding.vpClassItemList as YogaClassListViewPod
 
     }
+
     private fun refreshData() {
         // Example of a refresh operation, like a data reload
         binding.swipeRefreshLayout.isRefreshing = true  // Show loading spinner
@@ -81,18 +74,7 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
             binding.swipeRefreshLayout.isRefreshing = false  // Hide loading spinner
         }, 2000)  // Delay for 2 seconds
     }
-//    private fun refreshData() {
-//        // Simulate data loading
-//        // For example, you could fetch new data from an API
-//        binding.swipeRefreshLayout.isRefreshing = true // Show the refreshing spinner
-//
-//        // This is just a simulation; replace with actual data refresh logic
-//        yogaCourseViewModel.loadCourses()
-//        yogaClassInstanceViewModel.loadClassInstances()
-//
-//        // Stop the refreshing animation after data is loaded
-//        binding.swipeRefreshLayout.isRefreshing = false
-//    }
+
     private fun setUpListListener() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             refreshData()
@@ -128,6 +110,7 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
             startActivity(intent)
         }
     }
+
     private fun setUpObserveData() {
         // Observe data
         yogaClassInstanceViewModel.allClassInstances.observe(this) { resource ->
@@ -144,19 +127,18 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
                 is Resource.Success -> {
                     // Handle success, e.g., update UI or show a message
                     hideLoading()
-                    if(resource.data.isNullOrEmpty()){
+                    if (resource.data.isNullOrEmpty()) {
                         binding.tvClassesTitle.visibility = View.GONE
                         binding.tvClassesSeeAll.visibility = View.GONE
                         binding.vpClassItemList.visibility = View.GONE
 
-                    }else{
+                    } else {
                         binding.tvClassesTitle.visibility = View.VISIBLE
                         binding.tvClassesSeeAll.visibility = View.VISIBLE
                         binding.vpClassItemList.visibility = View.VISIBLE
-                        classItemListViewPod.setData(this,itemList = resource.data)
+                        classItemListViewPod.setData(this, itemList = resource.data)
 
                     }
-
 
 
                 }
@@ -186,18 +168,17 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
                 is Resource.Success -> {
                     // Handle success, e.g., update UI or show a message
 
-                    if(resource.data.isNullOrEmpty()){
+                    if (resource.data.isNullOrEmpty()) {
                         binding.tvCoursesTitle.visibility = View.GONE
                         binding.tvCoursesSeeAll.visibility = View.GONE
                         binding.vpCourseItemList.visibility = View.GONE
-                    }else{
+                    } else {
                         binding.tvCoursesTitle.visibility = View.VISIBLE
                         binding.tvCoursesSeeAll.visibility = View.VISIBLE
                         binding.vpCourseItemList.visibility = View.VISIBLE
-                        courseItemListViewPod.setData(this,itemList = resource.data)
+                        courseItemListViewPod.setData(this, itemList = resource.data)
 
                     }
-
 
 
                 }
@@ -217,11 +198,11 @@ class MainActivity : AppCompatActivity(),CourseItemDelegate,YogaClassItemDelegat
     }
 
     override fun onTapCourseItem(courseData: YogaCourse) {
-        startActivity(CourseDetailActivity.newIntent(this,courseData))
+        startActivity(CourseDetailActivity.newIntent(this, courseData))
     }
 
     override fun onTapClassItem(yogaClassInstance: YogaClassInstance) {
-        startActivity(ClassDetailActivity.newIntent(this,yogaClassInstance))
+        startActivity(ClassDetailActivity.newIntent(this, yogaClassInstance))
     }
 
 

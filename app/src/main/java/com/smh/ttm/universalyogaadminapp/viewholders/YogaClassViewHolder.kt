@@ -1,6 +1,7 @@
 package com.smh.ttm.universalyogaadminapp.viewholders
 
 import androidx.recyclerview.widget.RecyclerView
+import com.smh.ttm.universalyogaadminapp.R
 import com.smh.ttm.universalyogaadminapp.data.YogaClassInstance
 import com.smh.ttm.universalyogaadminapp.databinding.ViewHolderClassItemBinding
 import com.smh.ttm.universalyogaadminapp.delegates.YogaClassItemDelegate
@@ -17,6 +18,9 @@ class YogaClassViewHolder(private val binding: ViewHolderClassItemBinding, onTap
         binding.tvClassName.text = item.courseName
         binding.tvInstructorName.text = item.teacher
         binding.tvClassDate.text = item.date
+
+        binding.ivClassImg.setImageResource(R.drawable.default_yoga_img)
+
 
     }
 }

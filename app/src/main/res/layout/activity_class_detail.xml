@@ -76,12 +76,12 @@
                 <!--                android:layout_width="match_parent"-->
                 <!--                android:layout_height="wrap_content"/>-->
                 <ImageView
+                    android:layout_margin="@dimen/margin_card_medium_4"
                     android:id="@+id/iv_img"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/yoga_img_background" />
+                    android:src="@drawable/default_yoga_img" />
                 <!--         <FrameLayout-->
                 <!--             android:layout_gravity="center"-->
                 <!--                android:id="@+id/btnBack"-->

@@ -3,12 +3,10 @@ package com.smh.ttm.universalyogaadminapp.viewpods
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.smh.ttm.universalyogaadminapp.adapters.ItemAdapter
+import com.smh.ttm.universalyogaadminapp.adapters.YogaCourseItemAdapter
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.databinding.ViewPodItemListBinding
 import com.smh.ttm.universalyogaadminapp.delegates.CourseItemDelegate
@@ -17,7 +15,7 @@ class ItemListViewPod @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : RelativeLayout(context, attrs) {
     private  var binding: ViewPodItemListBinding
-    lateinit var mItemAdapter: ItemAdapter
+    lateinit var mYogaCourseItemAdapter: YogaCourseItemAdapter
     lateinit var mDelegate: CourseItemDelegate
 
 //    override fun onFinishInflate() {
@@ -39,8 +37,8 @@ class ItemListViewPod @JvmOverloads constructor(
     }
 
     private fun setupItemRecyclerView(delegate: CourseItemDelegate) {
-        mItemAdapter = ItemAdapter(delegate)
-        binding.rvItemList.adapter = mItemAdapter
+        mYogaCourseItemAdapter = YogaCourseItemAdapter(delegate)
+        binding.rvItemList.adapter = mYogaCourseItemAdapter
         // binding.rvItemList.layoutManager = GridLayoutManager(context,2)
         binding.rvItemList.layoutManager = LinearLayoutManager(context,
             RecyclerView.VERTICAL,false)
@@ -50,7 +48,7 @@ class ItemListViewPod @JvmOverloads constructor(
     fun setData(delegate: CourseItemDelegate,itemList: List<YogaCourse>){
         setDelegate(delegate)
         setupItemRecyclerView(mDelegate)
-        mItemAdapter.setItemData(itemList)
+        mYogaCourseItemAdapter.setItemData(itemList)
     }
    /* fun setupItemViewPod(backgroundColorReference: Int, titleText: String, description:String) {
         mItemAdapter.binding.cvItem.setBackgroundColor(ContextCompat.getColor(context, backgroundColorReference))

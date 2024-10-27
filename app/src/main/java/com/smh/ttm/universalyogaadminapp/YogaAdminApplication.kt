@@ -1,12 +1,11 @@
 package com.smh.ttm.universalyogaadminapp
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.smh.ttm.universalyogaadminapp.persistence.YogaDatabase
 import com.smh.ttm.universalyogaadminapp.repository.YogaRepository
+import com.smh.ttm.universalyogaadminapp.utils.NetworkUtil.isNetworkAvailable
 
 class YogaAdminApplication : Application() {
 
@@ -18,7 +17,7 @@ class YogaAdminApplication : Application() {
 
     private fun checkAndSyncData() {
         Log.d("application","checkAndSyncData")
-        if (isInternetAvailable()) {
+        if (isNetworkAvailable(this)) {
             Log.d("application","internet available")
             // Assume you have a repository instance available
             val yogaCourseDao = YogaDatabase.getDatabase(this).yogaCourseDao()
@@ -31,10 +30,10 @@ class YogaAdminApplication : Application() {
             repository.syncClassInstancesFromRoomToFirebase()
         }
     }
-
-    private fun isInternetAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
-    }
+//
+//    private fun isInternetAvailable(): Boolean {
+//        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        val networkInfo = connectivityManager.activeNetworkInfo
+//        return networkInfo != null && networkInfo.isConnected
+//    }
 }
