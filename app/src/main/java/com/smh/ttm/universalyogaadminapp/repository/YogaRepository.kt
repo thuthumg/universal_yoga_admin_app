@@ -37,23 +37,29 @@ class YogaRepository(
 
     // Upload image to Firebase Storage and insert/update the course with the image URL
     fun uploadImageAndSaveCourse(yogaCourse: YogaCourse, imageBitmap: Bitmap): Completable {
-        return Completable.create { emitter ->
-            val imageRef = storageReference.child("course_images/${yogaCourse.courseId}.jpg")
-            val baos = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val data = baos.toByteArray()
 
-            imageRef.putBytes(data)
-                .addOnSuccessListener {
-                    imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        yogaCourse.imageUri = uri.toString()  // Assuming imageUrl is a property in YogaCourse
-                        insertOrUpdateCourse(yogaCourse).subscribe()
-                        emitter.onComplete()
-                    }
-                }
-                .addOnFailureListener { error ->
-                    emitter.onError(error)
-                }
+        return Completable.create { emitter ->
+
+            yogaCourse.imageUri = imageBitmap.toString()  // Assuming imageUrl is a property in YogaCourse
+            insertOrUpdateCourse(yogaCourse).subscribe()
+            emitter.onComplete()
+
+//            val imageRef = storageReference.child("course_images/${yogaCourse.courseId}.jpg")
+//            val baos = ByteArrayOutputStream()
+//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//            val data = baos.toByteArray()
+//
+//            imageRef.putBytes(data)
+//                .addOnSuccessListener {
+//                    imageRef.downloadUrl.addOnSuccessListener { uri ->
+//                        yogaCourse.imageUri = uri.toString()  // Assuming imageUrl is a property in YogaCourse
+//                        insertOrUpdateCourse(yogaCourse).subscribe()
+//                        emitter.onComplete()
+//                    }
+//                }
+//                .addOnFailureListener { error ->
+//                    emitter.onError(error)
+//                }
         }.subscribeOn(Schedulers.io())
     }
 
