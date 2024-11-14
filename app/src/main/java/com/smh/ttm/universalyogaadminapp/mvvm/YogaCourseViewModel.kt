@@ -1,6 +1,9 @@
 package com.smh.ttm.universalyogaadminapp.mvvm
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -34,6 +37,10 @@ class YogaCourseViewModel(application: Application) : AndroidViewModel(applicati
     private val _deleteCourseStatus = MutableLiveData<Resource<YogaCourse>>()
     val deleteCourseStatus: LiveData<Resource<YogaCourse>> get() = _deleteCourseStatus
 
+    var selectedImageUriStr =  MutableLiveData<String>()
+    val selectedImageBitmap = MutableLiveData<Bitmap>()
+    private val _imageUploadStatus = MutableLiveData<Resource<YogaCourse>>()
+    val imageUploadStatus: LiveData<Resource<YogaCourse>> get() = _imageUploadStatus
 
     init {
         val yogaCourseDao = YogaDatabase.getDatabase(application).yogaCourseDao()
@@ -71,7 +78,7 @@ class YogaCourseViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     // Insert a new yoga course into the Room database with success and failure handling
-    fun insertCourse(yogaCourse: YogaCourse) {
+    /*fun insertCourse(yogaCourse: YogaCourse) {
         _insertCourseStatus.value = Resource.Loading()  // Emit loading state
 
         repository.insertCourse(yogaCourse)
@@ -102,7 +109,7 @@ class YogaCourseViewModel(application: Application) : AndroidViewModel(applicati
                 Log.e("YogaCourseViewModel", "Error updating yoga course: ${error.message}")
                 Toast.makeText(getApplication(), "Failed to update yoga course", Toast.LENGTH_SHORT).show()
             })
-    }
+    }*/
 
 
     fun deleteCourse(yogaCourse: YogaCourse) {
@@ -113,12 +120,12 @@ class YogaCourseViewModel(application: Application) : AndroidViewModel(applicati
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _deleteCourseStatus.value = Resource.Success(yogaCourse)  // Emit success state
-                Log.d("YogaCourseViewModel", "Yoga course updated successfully!")
-                Toast.makeText(getApplication(), "Yoga course updated successfully", Toast.LENGTH_SHORT).show()
+                Log.d("YogaCourseViewModel", "Yoga course deleted successfully!")
+                Toast.makeText(getApplication(), "Yoga course deleted successfully", Toast.LENGTH_SHORT).show()
             }, { error ->
-                _deleteCourseStatus.value = Resource.Error("Error updating yoga course: ${error.message}")  // Emit error state
-                Log.e("YogaCourseViewModel", "Error updating yoga course: ${error.message}")
-                Toast.makeText(getApplication(), "Failed to update yoga course", Toast.LENGTH_SHORT).show()
+                _deleteCourseStatus.value = Resource.Error("Error deleting yoga course: ${error.message}")  // Emit error state
+                Log.e("YogaCourseViewModel", "Error deleting yoga course: ${error.message}")
+                Toast.makeText(getApplication(), "Failed to delete yoga course", Toast.LENGTH_SHORT).show()
             })
     }
 
@@ -127,4 +134,22 @@ class YogaCourseViewModel(application: Application) : AndroidViewModel(applicati
             .onErrorResumeNext { _: Throwable -> Observable.just(emptyList()) } // Specify lambda to resolve overload
             .subscribeOn(Schedulers.io())
     }
+
+    // Upload image and save course
+    @SuppressLint("CheckResult")
+    fun uploadImageAndSaveCourse(yogaCourse: YogaCourse, imageBitmap: Bitmap) {
+        _imageUploadStatus.value = Resource.Loading()
+
+        repository.uploadImageAndSaveCourse(yogaCourse, imageBitmap)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _imageUploadStatus.value = Resource.Success(yogaCourse)
+                Toast.makeText(getApplication(), "Course saved with image URL!", Toast.LENGTH_SHORT).show()
+            }, { error: Throwable ->  // Specify the type of 'error' explicitly
+                _imageUploadStatus.value = Resource.Error("Failed to save course with image: ${error.message}")
+                Toast.makeText(getApplication(), "Failed to save course", Toast.LENGTH_SHORT).show()
+            })
+    }
+
 }

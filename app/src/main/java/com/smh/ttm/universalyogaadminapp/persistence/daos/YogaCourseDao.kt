@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.smh.ttm.universalyogaadminapp.data.YogaClassInstance
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
@@ -13,6 +14,7 @@ import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import io.reactivex.Completable
 
 import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
 interface YogaCourseDao {
@@ -38,4 +40,6 @@ interface YogaCourseDao {
 
     @Update
     fun update(yogaCourse: YogaCourse): Completable
+
+
 }

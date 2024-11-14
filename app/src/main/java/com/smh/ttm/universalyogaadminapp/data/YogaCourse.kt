@@ -15,5 +15,6 @@ data class YogaCourse(
     var duration: Int,     // Duration in minutes
     var price: String,     // Price per class
     var type: String,      // Type of class (Flow Yoga, Aerial Yoga, etc.)
-    var description: String? = null // Optional description
+    var description: String? = null, // Optional description
+    var imageUri: String? = null // Optional imageUrl
 ) : Serializable

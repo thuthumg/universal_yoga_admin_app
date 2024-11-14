@@ -1,29 +1,38 @@
 package com.smh.ttm.universalyogaadminapp.activities
 
+import android.Manifest
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.smh.ttm.universalyogaadminapp.R
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.databinding.ActivityCourseDetailBinding
 import com.smh.ttm.universalyogaadminapp.dummy.classTypes
 import com.smh.ttm.universalyogaadminapp.dummy.daysOfWeek
-import com.smh.ttm.universalyogaadminapp.dummy.filterTypes
 import com.smh.ttm.universalyogaadminapp.mvvm.Resource
 import com.smh.ttm.universalyogaadminapp.mvvm.YogaCourseViewModel
+import java.io.File
+import java.io.IOException
 import java.util.Calendar
 import kotlin.random.Random
 
@@ -34,6 +43,50 @@ class CourseDetailActivity : AppCompatActivity() {
     private var checkedDaysOfWeekItem = intArrayOf(-1)
     private val yogaCourseViewModel: YogaCourseViewModel by viewModels()
     private var mCourseVO: YogaCourse? = null
+
+    // Image picker result launcher
+    private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { uriPath ->
+            yogaCourseViewModel.selectedImageUriStr.value = uriPath.toString()
+            Glide.with(this)
+                .load(uriPath)
+                .into(binding.ivUpload)
+
+            if (Build.VERSION.SDK_INT >= 29) {
+
+                this.contentResolver?.let {
+                    val source: ImageDecoder.Source =
+                        ImageDecoder.createSource(it, uriPath)
+                    val bitmap = ImageDecoder.decodeBitmap(source)
+                    yogaCourseViewModel.selectedImageBitmap.value = bitmap
+
+                }
+
+
+            } else {
+                val bitmap = MediaStore.Images.Media.getBitmap(
+                    this.applicationContext?.contentResolver, uriPath
+                )
+                yogaCourseViewModel.selectedImageBitmap.value = bitmap
+
+            }
+
+
+
+
+        }
+    }
+
+    // Permission launcher
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            openImagePicker()
+        } else {
+            Toast.makeText(this, "Permission required to select image", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     companion object {
 
@@ -77,6 +130,10 @@ class CourseDetailActivity : AppCompatActivity() {
         binding.courseTime.setOnClickListener { showTimePickerDialog() }
         binding.btnSubmit.setOnClickListener { handleSubmit() }
 
+        binding.btnFileUpload.setOnClickListener {
+            checkPermissionAndPickImage()
+        }
+
         if (mCourseVO == null) {
             binding.ivDelete.visibility = View.GONE
         } else {
@@ -88,9 +145,46 @@ class CourseDetailActivity : AppCompatActivity() {
 
     }
 
+    private fun checkPermissionAndPickImage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_MEDIA_IMAGES
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openImagePicker()
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openImagePicker()
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
+    }
+
+    private fun openImagePicker() {
+        pickImage.launch("image/*")
+    }
+
+    private fun loadLocalImage(imageView: ImageView, imagePath: String) {
+        val imageFile = File(imagePath)
+        if (imageFile.exists()) {
+            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+            imageView.setImageBitmap(bitmap)
+        } else {
+            // Handle file not found case, if needed
+            imageView.setImageResource(R.drawable.default_yoga_img) // Set a placeholder image
+        }
+    }
+
     private fun getIntentParam() {
-
-
         val intent = intent
 
         if (intent.getSerializableExtra(YOGA_COURSE_VO) == null) {
@@ -99,7 +193,6 @@ class CourseDetailActivity : AppCompatActivity() {
         } else {
             mCourseVO = intent.getSerializableExtra(YOGA_COURSE_VO) as YogaCourse
             if (mCourseVO?.id.toString().isEmpty()) {
-
                 clearData()
             } else {
                 binding.dayOfWeek.setText(mCourseVO?.dayOfWeek)
@@ -109,6 +202,20 @@ class CourseDetailActivity : AppCompatActivity() {
                 binding.price.setText(mCourseVO?.price)
                 binding.typeOfClass.setText(mCourseVO?.type)
                 binding.description.setText(mCourseVO?.description)
+
+                // Load image if available
+                Log.d("course detail","${mCourseVO}")
+                if (!(mCourseVO?.imageUri.isNullOrEmpty())) {
+                    yogaCourseViewModel.selectedImageUriStr.value =  mCourseVO?.imageUri
+                    val imageUri = Uri.parse(mCourseVO?.imageUri) // Convert the string URI to Uri object
+                    // Load the image using Glide
+                    Glide.with(this)
+                        .load(imageUri)
+                        .into(binding.ivUpload)
+                } else {
+                   // setDefaultImage(mCourseVO?.type)
+                }
+
 
                 val classTypeIndex = classTypes.indexOf(mCourseVO?.type)
 
@@ -133,57 +240,58 @@ class CourseDetailActivity : AppCompatActivity() {
             }
         }
 
-
-
-
         when(binding.typeOfClass.text.toString())
         {
             classTypes[0]->{
-                binding.ivImg.setImageResource(R.drawable.flow_yoga)
+              //  binding.ivImg.setImageResource(R.drawable.flow_yoga)
             }
             classTypes[1] -> {
-                binding.ivImg.setImageResource(R.drawable.arial_yoga)
+              //  binding.ivImg.setImageResource(R.drawable.arial_yoga)
             }
             classTypes[2] -> {
-                binding.ivImg.setImageResource(R.drawable.family_yoga)
+               // binding.ivImg.setImageResource(R.drawable.family_yoga)
             }
         }
 
 
     }
 
-    private fun updateYogaCourse(yogaCourse: YogaCourse) {
-        yogaCourseViewModel.updateCourse(yogaCourse)
-
-        yogaCourseViewModel.updateCourseStatus.observe(this) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    // Show loading indicator if necessary
-
-                }
-
-                is Resource.Success -> {
-                    // Handle success, e.g., update UI or show a message
-                    finish()
-                }
-
-                is Resource.Error -> {
-                    // Handle error, e.g., show an error message
-                    Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-
-        // Optionally, observe the LiveData if needed
-        yogaCourseViewModel.allCourses.observe(this) { courses ->
-            // Update your UI with the list of courses
-        }
-    }
+//    private fun updateYogaCourse(yogaCourse: YogaCourse) {
+//        yogaCourseViewModel.updateCourse(yogaCourse)
+//
+//        yogaCourseViewModel.updateCourseStatus.observe(this) { resource ->
+//            when (resource) {
+//                is Resource.Loading -> {
+//                    // Show loading indicator if necessary
+//
+//                }
+//
+//                is Resource.Success -> {
+//                    // Handle success, e.g., update UI or show a message
+//                    finish()
+//                }
+//
+//                is Resource.Error -> {
+//                    // Handle error, e.g., show an error message
+//                    Toast.makeText(this, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+//
+//
+//        // Optionally, observe the LiveData if needed
+//        yogaCourseViewModel.allCourses.observe(this) { courses ->
+//            // Update your UI with the list of courses
+//        }
+//    }
 
     private fun insertYogaCourse(yogaCourse: YogaCourse) {
-        yogaCourseViewModel.insertCourse(yogaCourse)
-
+        //yogaCourseViewModel.insertCourse(yogaCourse)
+        yogaCourseViewModel.selectedImageBitmap.value?.let {
+            yogaCourseViewModel.uploadImageAndSaveCourse(yogaCourse,
+                it
+            )
+        }
         yogaCourseViewModel.insertCourseStatus.observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {
@@ -235,6 +343,17 @@ class CourseDetailActivity : AppCompatActivity() {
             // user checked an item
             checkedClassTypeItem[0] = which
             binding.typeOfClass.setText(classTypes[which])
+//            when(classTypes[which]){
+//                classTypes[0]->{
+//                    binding.ivImg.setImageResource(R.drawable.flow_yoga)
+//                }
+//                classTypes[1] -> {
+//                    binding.ivImg.setImageResource(R.drawable.arial_yoga)
+//                }
+//                classTypes[2] -> {
+//                    binding.ivImg.setImageResource(R.drawable.family_yoga)
+//                }
+//            }
             dialog.dismiss()
 
         }
@@ -304,8 +423,16 @@ class CourseDetailActivity : AppCompatActivity() {
         // Show confirmation message
         saveDataToLocal(dayOfWeek, courseTime, capacity, duration, price, typeOfClass)
 
-
     }
+
+//    private fun setDefaultImage(type: String?) {
+//        when(type) {
+//            classTypes[0] -> binding.ivImg.setImageResource(R.drawable.flow_yoga)
+//            classTypes[1] -> binding.ivImg.setImageResource(R.drawable.arial_yoga)
+//            classTypes[2] -> binding.ivImg.setImageResource(R.drawable.family_yoga)
+//            else -> binding.ivImg.setImageResource(R.drawable.default_yoga_img)
+//        }
+//    }
 
     private fun saveDataToLocal(
         dayOfWeek: String,
@@ -324,7 +451,8 @@ class CourseDetailActivity : AppCompatActivity() {
             duration = duration.toInt(),
             price = price.toDouble().toString(),
             type = typeOfClass,
-            description = binding.description.text.toString()
+            description = binding.description.text.toString(),
+            imageUri =  yogaCourseViewModel.selectedImageUriStr.value.toString()
         )
 
         if (mCourseVO == null) {
@@ -340,10 +468,12 @@ class CourseDetailActivity : AppCompatActivity() {
             mCourseVO?.price = price.toDouble().toString()
             mCourseVO?.type = typeOfClass
             mCourseVO?.description = binding.description.text.toString()
-
+            mCourseVO?.imageUri =  yogaCourseViewModel.selectedImageBitmap.value.toString()
 
             // Toast.makeText(this, "updateYogaCourse ${yogaClass}", Toast.LENGTH_SHORT).show()
-            mCourseVO?.let { updateYogaCourse(it) }
+           // mCourseVO?.let { updateYogaCourse(it) }
+
+            mCourseVO?.let { insertYogaCourse(it) }
         }
 
 

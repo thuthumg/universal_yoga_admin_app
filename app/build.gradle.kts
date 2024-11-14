@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.roomRuntime)
     implementation(libs.androidx.annotation)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
     kapt(libs.roomCompiler) // Correct use of kapt with Room
     implementation(libs.roomKtx)
     // Room with RxJava3
@@ -90,6 +91,7 @@ dependencies {
     implementation(libs.coroutinesCore)
     implementation(libs.coroutinesAndroid)
     implementation(libs.firebase.bom)
+    implementation (libs.firebase.storage)
    // implementation(libs.firebase.analytics)
 
    implementation(libs.android.gif.drawable)
@@ -107,7 +109,14 @@ dependencies {
 //    //RxBiniding
 //    implementation ("com.jakewharton.rxbinding4:rxbinding-core:4.0.0")
 //    implementation ("com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0")
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+    implementation (libs.androidx.swiperefreshlayout)
+
+
+    //glide for image
+    implementation (libs.github.glide)
+  //  implementation (libs.androidx.espresso.contrib)
+  //  implementation (libs.androidx.navigation.ui.ktx)
+    annotationProcessor (libs.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

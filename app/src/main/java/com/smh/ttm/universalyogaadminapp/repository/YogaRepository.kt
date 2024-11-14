@@ -1,9 +1,12 @@
 package com.smh.ttm.universalyogaadminapp.repository
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.smh.ttm.universalyogaadminapp.data.YogaClassInstance
 import com.smh.ttm.universalyogaadminapp.data.YogaCourse
 import com.smh.ttm.universalyogaadminapp.persistence.daos.YogaClassInstanceDao
@@ -11,8 +14,10 @@ import com.smh.ttm.universalyogaadminapp.persistence.daos.YogaCourseDao
 
 
 import io.reactivex.Completable
+import io.reactivex.CompletableEmitter
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import java.io.ByteArrayOutputStream
 
 class YogaRepository(
     private val yogaCourseDao: YogaCourseDao,
@@ -20,6 +25,7 @@ class YogaRepository(
     private val firebaseDb: FirebaseFirestore,
     private val context: Context
 ) {
+    private val storageReference: StorageReference = FirebaseStorage.getInstance().reference
 
     // Function to check internet connectivity
     private fun isInternetAvailable(): Boolean {
@@ -29,9 +35,41 @@ class YogaRepository(
         return networkInfo != null && networkInfo.isConnected
     }
 
-    // Insert YogaClass into the Room database
+    // Upload image to Firebase Storage and insert/update the course with the image URL
+    fun uploadImageAndSaveCourse(yogaCourse: YogaCourse, imageBitmap: Bitmap): Completable {
+        return Completable.create { emitter ->
+            val imageRef = storageReference.child("course_images/${yogaCourse.courseId}.jpg")
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
 
-    fun insertCourse(yogaCourse: YogaCourse): Completable {
+            imageRef.putBytes(data)
+                .addOnSuccessListener {
+                    imageRef.downloadUrl.addOnSuccessListener { uri ->
+                        yogaCourse.imageUri = uri.toString()  // Assuming imageUrl is a property in YogaCourse
+                        insertOrUpdateCourse(yogaCourse).subscribe()
+                        emitter.onComplete()
+                    }
+                }
+                .addOnFailureListener { error ->
+                    emitter.onError(error)
+                }
+        }.subscribeOn(Schedulers.io())
+    }
+
+
+    // Insert or update YogaCourse in the Room database and sync to Firebase
+    private fun insertOrUpdateCourse(yogaCourse: YogaCourse): Completable {
+        return yogaCourseDao.insert(yogaCourse)
+            .subscribeOn(Schedulers.io())
+            .doOnComplete {
+                if (isInternetAvailable()) {
+                    syncCourseToFirebase(yogaCourse)
+                }
+            }
+    }
+
+   /* fun insertCourse(yogaCourse: YogaCourse): Completable {
         return yogaCourseDao.insert(yogaCourse)
             .subscribeOn(Schedulers.io())
             .doOnComplete {
@@ -51,7 +89,7 @@ class YogaRepository(
                     syncCourseToFirebase(yogaCourse)
                 }
             }
-    }
+    }*/
 
     //deleteCourse
     fun deleteCourse(yogaCourse: YogaCourse): Completable {
@@ -164,7 +202,7 @@ class YogaRepository(
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val yogaCourse = document.toObject(YogaCourse::class.java)
-                    insertCourse(yogaCourse).subscribe()
+                   // insertCourse(yogaCourse).subscribe()
                 }
             }
     }

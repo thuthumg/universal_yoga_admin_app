@@ -134,7 +134,11 @@ class ClassDetailActivity : AppCompatActivity() {
         binding.etDate.setText("")
         binding.instructorName.setText("")
         binding.description.setText("")
-        binding.etClassName.setText("C-${getRandomSixDigitNumber()}")
+
+        val defaultClassName = "C-${getRandomSixDigitNumber()}"
+        binding.etClassName.setText(defaultClassName)
+        binding.etClassName.setSelection(binding.etClassName.text.length) // Move the cursor to the end
+        binding.etClassName.isEnabled = true
 
         binding.btnClassSave.text = "Save"
     }
